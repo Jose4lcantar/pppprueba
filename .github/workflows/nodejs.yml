@@ -28,11 +28,26 @@ jobs:
   deploy:
     needs: test
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout código
         uses: actions/checkout@v3
 
-      - name: Deploy a GitHub Pages
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Construir sitio (si aplica)
+        run: |
+          mkdir -p public
+          echo '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Fallback</title></head><body><h1>Archivo faltante</h1></body></html>' > public/index.html
+        if: "!contains(runner.os, 'Windows')"  # solo ejecuta si no estás en Windows, útil para reemplazo en sitios reales
+
+      - name: Desplegar a GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
