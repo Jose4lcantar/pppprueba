@@ -41,12 +41,6 @@ jobs:
       - name: Instalar dependencias
         run: npm ci
 
-      - name: Construir sitio (si aplica)
-        run: |
-          mkdir -p public
-          echo '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Fallback</title></head><body><h1>Archivo faltante</h1></body></html>' > public/index.html
-        if: "!contains(runner.os, 'Windows')"  # solo ejecuta si no estás en Windows, útil para reemplazo en sitios reales
-
       - name: Desplegar a GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
