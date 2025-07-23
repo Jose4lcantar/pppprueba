@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Node.js CI/CD
 
 on:
   push:
@@ -9,18 +9,16 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout código
-        uses: actions/checkout@v3
-
-      - name: Instalar Node.js
-        uses: actions/setup-node@v3
+      # ... (tus pasos actuales)
+  
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy a GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          node-version: 18
-
-      - name: Instalar dependencias
-        run: npm ci
-
-      - name: Ejecutar pruebas
-        run: npx jest
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
