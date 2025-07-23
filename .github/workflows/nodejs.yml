@@ -9,14 +9,29 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
-      # ... (tus pasos actuales)
-  
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Ejecutar pruebas
+        run: npx jest
+
   deploy:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout código
+        uses: actions/checkout@v3
+
       - name: Deploy a GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
